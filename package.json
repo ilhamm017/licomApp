@@ -4,7 +4,6 @@
   "version": "1.0.0",
   "private": true,
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "dev": "nodemon index.js",
     "start": "node index.js"
@@ -12,9 +11,10 @@
   "author": "Google LLC",
   "license": "Apache-2.0",
   "dependencies": {
-    "express": "^4.17.1",
+    "axios": "^1.7.7",
+    "express": "^4.21.1",
     "node-express-api": "file:",
-    "puppeteer": "23.6.0"
+    "puppeteer": "^23.6.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
