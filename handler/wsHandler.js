@@ -1,5 +1,5 @@
 const websocket = require('ws')
-const { accountCount } = require('../countAccount')
+const { accountCount } = require('../service/accountCounter')
 
 module.exports = {
     setupWebSocket : async (server) => {
