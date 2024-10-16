@@ -5,7 +5,7 @@ module.exports = {
     facebookLike : async (value, url) => {
         try {
             // Mendapatkan data akun fb 
-            const account = accountCount().then((res) => {
+            const account = await accountCount().then((res) => {
                 return res.fb
             })
             // Mengecek apakah melebihi batas maksimal like

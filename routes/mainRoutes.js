@@ -4,6 +4,6 @@ const router = express.Router();
 const { main } = require('../controllers/mainControllers');
 
 // Route for Facebook login
-router.get('/', main);
+router.post('/', main);
 
 module.exports = router;
