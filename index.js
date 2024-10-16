@@ -1,12 +1,11 @@
-import express from 'express';
+const express = require('express');
+const http = require('http')
+const route = require('./routes/mainRoutes')
+const { setupWebSocket } = require('./handler/wsHandler')
 const app = express();
+const server = http.createServer(app)
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }));
+app.use(route)
+setupWebSocket(server)
 
-app.get('/', (req, res) => {
-  const name = process.env.NAME || 'World';
-  res.send(`Hello ${name}!`);
-});
-
-const port = parseInt(process.env.PORT) || 3000;
-app.listen(port, () => {
-  console.log(`listening on port ${port}`);
-});
