@@ -1,35 +1,34 @@
-const { accountCount } = require('../service/accountCounter')
 const { like } = require('../service/facebookService')
 
 module.exports = {
     facebookLike : async (value, url) => {
         try {
-            // Mendapatkan data akun fb 
-            const account = await accountCount().then((res) => {
-                return res.fb
-            })
-            // Mengecek apakah melebihi batas maksimal like
-            if (value > account.length) {
-                return {
-                    message: 'Melebihi batas maksimal like'
-                }
-            }
-            // Melakukan like
+            // Melakukan like secara berurutan dan menunggu setiap like selesai
+            const likePromises = [];
             for (let i = 0; i < value; i++) {
-                like(account[i].id, url)
+                likePromises.push(like(account[i].id, url));
             }
-            return {
-                message: 'Like berhasil'
-            }
+            // Menunggu semua like selesai sebelum mengembalikan respons
+            await Promise.all(likePromises);
+
+            return { message: 'Like berhasil' };
         } catch (error) {
             throw error
         }
     },
     facebookComment : async (value, url, comment) => {
         try {
-            
+            // Melakukan komentar sebanyak yang dibutuhkan
+            const commentPromises = [];
+            for (let i = 0; i < value; i++) {
+                commentPromises.push(comment(account[i].id, url, comment));
+            }
+            // Menunggu semua komentar selesai sebelum mengembalikan respons
+            await Promise.all(commentPromises);
+
+            return { message: 'Komentar berhasil' };
         } catch (error) {
-            
+            throw error
         }
     }
 }
