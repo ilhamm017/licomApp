@@ -23,7 +23,7 @@ module.exports = {
                 console.log('Client disconnected')
             })
         })
-        setInterval(broadcastAccountCount, 1000)
+        setInterval(broadcastAccountCount, 5000)
 
         const port = parseInt(process.env.PORT) || 3000;
         server.listen(port, () => {

@@ -7,6 +7,12 @@
       font-family: sans-serif;
     }
 
+    #igAccountInfo {
+  display: flex;
+  align-items: center; /* Sejajarkan ikon dan teks secara vertikal */
+  margin-bottom: 10px; 
+}
+
     #container {
       display: flex;
       justify-content: center;
@@ -49,6 +55,61 @@
       border-radius: 4px;
       cursor: pointer;
     }
+
+    #responseMessage {
+      margin-top: 10px;
+      padding: 15px;
+      border-radius: 8px;
+      display: none; 
+      font-weight: 500;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Efek bayangan */
+      animation: fadeOut 3s forwards; /* Animasi untuk menghilangkan pesan setelah 3 detik */
+    }
+
+    .success {
+      background-color: #d4edda;
+      border: 1px solid #c3e6cb;
+      color: #155724;
+    }
+
+    .error {
+      background-color: #f8d7da;
+      border: 1px solid #f5c6cb;
+      color: #721c24;
+    }
+
+    .loading {
+      background-color: #eee;
+      border: 1px solid #ddd;
+      color: #999;
+      display: flex;
+      align-items: center; /* Pusatkan teks dan loading spinner secara vertikal */
+    }
+
+    .loading::before {
+      content: ''; /* Tambahkan loading spinner */
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      margin-right: 8px;
+      border-radius: 50%;
+      border: 3px solid #ccc;
+      border-color: #007bff transparent #007bff transparent;
+      animation: spin 1.2s linear infinite;
+    }
+
+    /* Animasi untuk loading spinner */
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Animasi untuk menghilangkan pesan */
+    @keyframes fadeOut {
+      0% { opacity: 1; }
+      80% { opacity: 1; } 
+      100% { opacity: 0; display: none; } 
+    }
   </style>
 </head>
 <body>
@@ -62,7 +123,6 @@
       <div id="igAccountInfo">
         Instagram: <span id="ig-available-accounts">Memuat...</span>
       </div>
-      <br><br>
       <form id="actionForm">
         <label for="action">Action:</label>
         <select id="action" name="action">
@@ -84,10 +144,10 @@
           <textarea id="commentText" name="commentText"></textarea>
           <br><br>
         </div>
-
-
         <button type="submit">Kirim</button>
       </form>
+      <div id="responseMessage"> </div> 
+    </div>
     </div>
   </div>
 
@@ -98,6 +158,7 @@
     const form = document.getElementById('actionForm');
     const actionSelect = document.getElementById('action');
     const commentSection = document.getElementById('commentSection');
+    const responseMessage = document.getElementById('responseMessage');
     const url = document.getElementById('url')
 
     actionSelect.addEventListener('change', () => {
@@ -112,11 +173,14 @@
       event.preventDefault(); // Mencegah refresh halaman
 
       const data = {
-        url: form.url,
+        url: form.url.value,
         action: form.action.value,
         value: form.quantity.value,
         comment: form.commentText.value || null // Kirim null jika tidak ada komentar
       };
+      responseMessage.textContent = "Mengirim permintaan . . .";
+      responseMessage.className = "loading";
+      responseMessage.style.display = "block";
 
       // Mengirim data ke backend (ganti URL dengan endpoint server Anda)
       fetch('http://127.0.0.1:3000/action', {
@@ -130,10 +194,16 @@
       .then(data => {
         // Tangani respons dari server (misalnya, tampilkan pesan sukses)
         console.log(data);
+        responseMessage.textContent = data.message;
+        responseMessage.className = 'success';
+        responseMessage.style.display = 'block';
       })
       .catch(error => {
         // Tangani error
         console.error('Error:', error);
+        responseMessage.textContent = 'Terjadi kesalahan: ' + error.message
+        responseMessage.className = 'error'
+        responseMessage.style.display = 'block'
       });
     });
         
