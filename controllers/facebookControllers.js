@@ -6,7 +6,8 @@ module.exports = {
             // Melakukan like secara berurutan dan menunggu setiap like selesai
             const likePromises = [];
             for (let i = 0; i < value; i++) {
-                likePromises.push(fbLike(account[i].id, url));
+                const job = await fbLike(account[i].id, url)
+                likePromises.push(job);
             }
             // Menunggu semua like selesai sebelum mengembalikan respons
             await Promise.all(likePromises);
