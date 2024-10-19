@@ -10,18 +10,19 @@ module.exports = {
         try {
             const parsedUrl = new URL(url);
             let result = null
-            // Mendapatkan data akun fb 
-            const account = await accountCount().then((res) => {
-                return res.fb
-            })
-            // Mengecek apakah melebihi batas maksimal like
-            if (value > account.length) {
-                throw new Error('Melebihi batas maksimal like')
-            }
+            let account = ''
             // Memeriksa apakah URL adalah Facebook atau Instagram
             switch (parsedUrl.hostname) {
                 case 'www.facebook.com':
                     // Proses data jika URL adalah Facebook
+                    // Mendapatkan data akun fb 
+                    account = await accountCount().then((res) => {
+                        return res.fb
+                    })
+                    // Mengecek apakah melebihi batas maksimal like
+                    if (value > account.length) {
+                        throw new Error('Melebihi batas maksimal like')
+                    }
                     if (action === 'like') {
                         result = await facebookLike(account, value, url);
                     } else if (action === 'comment') {
@@ -32,6 +33,14 @@ module.exports = {
                     break;
                 case 'www.instagram.com':
                     // Proses data jika URL adalah Instagram
+                    // Mendapatkan data akun fb 
+                    account = await accountCount().then((res) => {
+                        return res.ig
+                    })
+                    // Mengecek apakah melebihi batas maksimal like
+                    if (value > account.length) {
+                        throw new Error('Melebihi batas maksimal like')
+                    }
                     if (action === 'like') {
                         result = await instagramLike(account, value, url);
                     } else if (action === 'comment') {
