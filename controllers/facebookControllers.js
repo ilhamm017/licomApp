@@ -21,7 +21,8 @@ module.exports = {
             // Melakukan komentar sebanyak yang dibutuhkan
             const commentPromises = [];
             for (let i = 0; i < value; i++) {
-                commentPromises.push(fbComment(account[i].id, url, comment));
+                const job = await fbComment(account[i].id, url, comment)
+                commentPromises.push(job);
             }
             // Menunggu semua komentar selesai sebelum mengembalikan respons
             await Promise.all(commentPromises);
