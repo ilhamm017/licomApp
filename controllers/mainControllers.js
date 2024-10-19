@@ -45,5 +45,12 @@ module.exports = {
                 message: error.message
             })
         }
+    },
+    web : async (req,res) => {
+        try {
+            
+        } catch (error) {
+            
+        }
     }
 }

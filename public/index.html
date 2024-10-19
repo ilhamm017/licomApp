@@ -55,22 +55,24 @@
   <div id="container">
     <div id="formWrapper">
       <h1>Auto Like & Comment</h1>
-      <div id="accountInfo">
-        Akun tersedia: <span id="available-accounts">Memuat...</span>
+      <h4>Akun tersedia</h4>
+      <div id="fbAccountInfo">
+        Facebook: <span id="fb-available-accounts">Memuat...</span>
       </div>
+      <div id="igAccountInfo">
+        Instagram: <span id="ig-available-accounts">Memuat...</span>
+      </div>
+      <br><br>
       <form id="actionForm">
-        <label for="platform">Platform:</label>
-        <select id="platform" name="platform">
-          <option value="facebook">Facebook</option>
-          <option value="instagram">Instagram</option>
-        </select>
-        <br><br>
-
         <label for="action">Action:</label>
         <select id="action" name="action">
           <option value="like">Like</option>
           <option value="comment">Comment</option>
         </select>
+        <br><br>
+
+        <label for="url">URL Postingan:</label>
+        <textarea id="url" name="url" required></textarea>
         <br><br>
 
         <label for="quantity">Jumlah:</label>
@@ -89,11 +91,14 @@
     </div>
   </div>
 
+
+
   <script>
     // ... (JavaScript untuk form handling dari jawaban sebelumnya) ...
     const form = document.getElementById('actionForm');
     const actionSelect = document.getElementById('action');
     const commentSection = document.getElementById('commentSection');
+    const url = document.getElementById('url')
 
     actionSelect.addEventListener('change', () => {
       if (actionSelect.value === 'comment') {
@@ -107,14 +112,14 @@
       event.preventDefault(); // Mencegah refresh halaman
 
       const data = {
-        platform: form.platform.value,
+        url: form.url,
         action: form.action.value,
-        quantity: form.quantity.value,
-        commentText: form.commentText.value || null // Kirim null jika tidak ada komentar
+        value: form.quantity.value,
+        comment: form.commentText.value || null // Kirim null jika tidak ada komentar
       };
 
       // Mengirim data ke backend (ganti URL dengan endpoint server Anda)
-      fetch('/api/submit-action', {
+      fetch('http://127.0.0.1:3000/action', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -134,7 +139,8 @@
         
     // WebSocket untuk menampilkan jumlah akun
     const ws = new WebSocket('ws://localhost:3000/ws'); // Ganti dengan port WebSocket server
-    const accountsElement = document.getElementById('available-accounts');
+    const fbAccountsElement = document.getElementById('fb-available-accounts');
+    const igAccountElement = document.getElementById('ig-available-accounts');
 
     ws.onopen = () => {
       console.log('Koneksi WebSocket terbuka');
@@ -142,7 +148,9 @@
 
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      accountsElement.textContent = data.availableAccounts;
+      fbAccountsElement.textContent = data.fb.length;
+      igAccountElement.textContent = data.ig.length;
+      console.log(data)
     };
 
     ws.onclose = () => {
