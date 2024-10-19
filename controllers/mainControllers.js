@@ -1,7 +1,7 @@
 const { URL } = require('url');
 const { accountCount } = require('../service/accountCounter')
 const { facebookLike, facebookComment } = require('./facebookControllers');
-const Home = require('../public/index.html')
+const path = require('path')
 
 module.exports = {
     main : async (req, res) => {
@@ -49,7 +49,8 @@ module.exports = {
     },
     web : async (req,res) => {
         try {
-            return res.sendFile(Home);
+            const indexPath = path.join(__dirname, '../public', 'index.html');
+            return res.sendFile(indexPath);
         } catch (error) {
             console.error(error.message)
             return res.status(500).json({
