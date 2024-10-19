@@ -1,7 +1,7 @@
 const { like } = require('../service/facebookService')
 
 module.exports = {
-    facebookLike : async (value, url) => {
+    facebookLike : async (account, value, url) => {
         try {
             // Melakukan like secara berurutan dan menunggu setiap like selesai
             const likePromises = [];
@@ -16,7 +16,7 @@ module.exports = {
             throw error
         }
     },
-    facebookComment : async (value, url, comment) => {
+    facebookComment : async (account, value, url, comment) => {
         try {
             // Melakukan komentar sebanyak yang dibutuhkan
             const commentPromises = [];

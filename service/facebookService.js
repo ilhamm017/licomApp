@@ -38,7 +38,7 @@ module.exports = {
             throw error
         }
     },
-    comment : async (id, url) => {
+    comment : async (id, url, comment) => {
         try {
             // Membuka browser 
             const res = await request.openBrowser({
@@ -60,7 +60,7 @@ module.exports = {
                 // Fokus pada selector 
                 await page.focus(commentSelector)
                 // Menuliskan komentar 
-                await page.type(commentSelector, 'hallo', { delay: 100 })
+                await page.type(commentSelector, comment, { delay: 100 })
             }
         } catch (error) {
             throw error

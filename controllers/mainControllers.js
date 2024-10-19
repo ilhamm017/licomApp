@@ -21,9 +21,9 @@ module.exports = {
                 case 'www.facebook.com':
                     // Proses data jika URL adalah Facebook
                     if (action === 'like') {
-                        result = await facebookLike(value, url);
+                        result = await facebookLike(account, value, url);
                     } else if (action === 'comment') {
-                        result = await facebookComment(value, url, comment);
+                        result = await facebookComment(account, value, url, comment);
                     } else {
                         throw ({ message: 'Action tidak valid. Hanya "like" atau "comment" yang didukung.' });
                     }
