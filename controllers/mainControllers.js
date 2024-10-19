@@ -1,6 +1,7 @@
 const { URL } = require('url');
 const { accountCount } = require('../service/accountCounter')
 const { facebookLike, facebookComment } = require('./facebookControllers');
+const { instagramComment, instagramLike} = require('./instagramControllers')
 const path = require('path')
 
 module.exports = {
@@ -28,11 +29,16 @@ module.exports = {
                     } else {
                         throw ({ message: 'Action tidak valid. Hanya "like" atau "comment" yang didukung.' });
                     }
-                    console.log('Ini adalah URL Facebook. Lakukan proses A.');
                     break;
                 case 'www.instagram.com':
                     // Proses data jika URL adalah Instagram
-                    console.log('Ini adalah URL Instagram. Lakukan proses B.');
+                    if (action === 'like') {
+                        result = await instagramLike(account, value, url);
+                    } else if (action === 'comment') {
+                        result = await instagramComment(account, value, url, comment);
+                    } else {
+                        throw ({ message: 'Action tidak valid. Hanya "like" atau "comment" yang didukung.' });
+                    }
                     break;
                 default:
                 throw new Error('URL tidak valid. Hanya URL Facebook atau Instagram yang didukung.');

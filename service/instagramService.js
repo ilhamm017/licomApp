@@ -1,10 +1,10 @@
 const puppeteer = require('puppeteer');
 const request = require('./request')
-const likeSelector = `div.x1i10hfl.xjbqb8w.x1qjc9v5.x26u7qi[aria-label="Like"][role="button"]`
-const commentSelector = `div.xzsf02u.x1a2a7pz.x1n2onr6.x14wi4xw.notranslate[aria-label="Write a comment…"]`
+const likeSelector = `div[role="button"].x6s0dn4.x78zum5.xl56j7k`
+const commentSelector = `textarea[aria-label="Tambahkan komentar…"]`
 
 module.exports = {
-    fbLike : async (id,url) => {
+    igLike : async (id,url) => {
         try {
             // Membuka browser
             const res = await request.openBrowser({
@@ -34,7 +34,7 @@ module.exports = {
             throw error
         }
     },
-    fbComment : async (id, url, comment) => {
+    igComment : async (id, url, comment) => {
         try {
             // Membuka browser 
             const res = await request.openBrowser({
