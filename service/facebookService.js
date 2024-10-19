@@ -61,6 +61,9 @@ module.exports = {
                 await page.focus(commentSelector)
                 // Menuliskan komentar 
                 await page.type(commentSelector, comment, { delay: 100 })
+                // melakukan enter 
+                await page.keyboard.press('Enter')
+                await page.close()
             }
         } catch (error) {
             throw error

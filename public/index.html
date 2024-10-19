@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Aplikasi Auto Like & Comment</title>
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+
+    #container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    #formWrapper {
+      width: 400px;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    #accountInfo {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input[type="number"],
+    textarea {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      margin-bottom: 10px;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <div id="formWrapper">
+      <h1>Auto Like & Comment</h1>
+      <div id="accountInfo">
+        Akun tersedia: <span id="available-accounts">Memuat...</span>
+      </div>
+      <form id="actionForm">
+        <label for="platform">Platform:</label>
+        <select id="platform" name="platform">
+          <option value="facebook">Facebook</option>
+          <option value="instagram">Instagram</option>
+        </select>
+        <br><br>
+
+        <label for="action">Action:</label>
+        <select id="action" name="action">
+          <option value="like">Like</option>
+          <option value="comment">Comment</option>
+        </select>
+        <br><br>
+
+        <label for="quantity">Jumlah:</label>
+        <input type="number" id="quantity" name="quantity" min="1" value="1">
+        <br><br>
+
+        <div id="commentSection" style="display: none;">
+          <label for="commentText">Komentar:</label>
+          <textarea id="commentText" name="commentText"></textarea>
+          <br><br>
+        </div>
+
+
+        <button type="submit">Kirim</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // ... (JavaScript untuk form handling dari jawaban sebelumnya) ...
+    const form = document.getElementById('actionForm');
+    const actionSelect = document.getElementById('action');
+    const commentSection = document.getElementById('commentSection');
+
+    actionSelect.addEventListener('change', () => {
+      if (actionSelect.value === 'comment') {
+        commentSection.style.display = 'block';
+      } else {
+        commentSection.style.display = 'none';
+      }
+    });
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault(); // Mencegah refresh halaman
+
+      const data = {
+        platform: form.platform.value,
+        action: form.action.value,
+        quantity: form.quantity.value,
+        commentText: form.commentText.value || null // Kirim null jika tidak ada komentar
+      };
+
+      // Mengirim data ke backend (ganti URL dengan endpoint server Anda)
+      fetch('/api/submit-action', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => response.json())
+      .then(data => {
+        // Tangani respons dari server (misalnya, tampilkan pesan sukses)
+        console.log(data);
+      })
+      .catch(error => {
+        // Tangani error
+        console.error('Error:', error);
+      });
+    });
+        
+    // WebSocket untuk menampilkan jumlah akun
+    const ws = new WebSocket('ws://localhost:3000/ws'); // Ganti dengan port WebSocket server
+    const accountsElement = document.getElementById('available-accounts');
+
+    ws.onopen = () => {
+      console.log('Koneksi WebSocket terbuka');
+    };
+
+    ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      accountsElement.textContent = data.availableAccounts;
+    };
+
+    ws.onclose = () => {
+      console.log('Koneksi WebSocket ditutup');
+      accountsElement.textContent = 'Offline'; // Atau tampilkan pesan error
+    };
+  </script>
+</body>
+</html>
