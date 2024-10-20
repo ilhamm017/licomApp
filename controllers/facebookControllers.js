@@ -4,15 +4,27 @@ module.exports = {
     facebookLike : async (account, value, url) => {
         try {
             // Melakukan like secara berurutan dan menunggu setiap like selesai
-            const likePromises = [];
+            let likePromises = [];
+            let errorCount = 0
             for (let i = 0; i < value; i++) {
-                const job = await fbLike(account[i].id, url)
+                const job = await fbLike(account[i].id, url).catch( error => {
+                    errorCount ++
+                    return error
+                })
                 likePromises.push(job);
             }
             // Menunggu semua like selesai sebelum mengembalikan respons
             await Promise.all(likePromises);
-
-            return { message: 'Like berhasil' };
+            console.log(errorCount)
+            errorCount = value-errorCount
+            if (errorCount == 0){
+                return { 
+                    message: 'Gagal'
+                };
+            }
+            return { 
+                message: 'Like berhasil'
+            };
         } catch (error) {
             throw error
         }

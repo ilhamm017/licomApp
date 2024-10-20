@@ -23,17 +23,23 @@ module.exports = {
                 const page = await browser.newPage()
                 await page.goto(url)
                 // Menunggu selector siap 
-                await page.waitForSelector(likeSelector) 
-                // Fokus pada selector 
-                await page.focus(likeSelector) 
-                // Kemudian klik
-                await page.click(likeSelector);
-                await page.click(likeSelector);
+                try {
+                    await page.waitForSelector(likeSelector) 
+                    // Fokus pada selector 
+                    await page.focus(likeSelector) 
+                    // Kemudian klik
+                    await page.click(likeSelector);
+                } catch (error) {
+                    await page.close()
+                    await browser.close()
+                    throw error
+                }
                 // tutup page
-                // await page.close()
+                await page.close()
+                await browser.close()
             }
         } catch (error) {
-            throw error
+            return error
         }
     },
     igComment : async (id, url, comment) => {
@@ -53,18 +59,25 @@ module.exports = {
                 })
                 const page = await browser.newPage()
                 await page.goto(url)
-                // Menunggu selector siap 
-                await page.waitForSelector(commentSelector)
-                // Fokus pada selector 
-                await page.focus(commentSelector)
-                // Menuliskan komentar 
-                await page.type(commentSelector, comment, { delay: 100 })
-                // melakukan enter 
+                try {
+                    // Menunggu selector siap 
+                    await page.waitForSelector(commentSelector)
+                    // Fokus pada selector 
+                    await page.focus(commentSelector)
+                    // Menuliskan komentar 
+                    await page.type(commentSelector, comment, { delay: 100 })
+                    // melakukan enter 
                 await page.keyboard.press('Enter')
+                } catch (error) {
+                    await page.close()
+                    await browser.close()
+                    throw error
+                }
                 await page.close()
+                await browser.close()
             }
         } catch (error) {
-            throw error
+            return error
         }
     }
 }
