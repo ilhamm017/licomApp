@@ -22,6 +22,7 @@ module.exports = {
                 const page = await browser.newPage()
                 await page.goto(url)
                 // Menunggu selector siap 
+                await page.waitForNetworkIdle()
                 try {
                     await page.waitForSelector(likeSelector) 
                     // Fokus pada selector 
@@ -59,18 +60,25 @@ module.exports = {
                 const page = await browser.newPage()
                 await page.goto(url)
                 // Menunggu selector siap 
-                await page.waitForSelector(commentSelector)
-                // Fokus pada selector 
-                await page.focus(commentSelector)
-                // Menuliskan komentar 
-                await page.type(commentSelector, comment, { delay: 100 })
-                // melakukan enter 
-                await page.keyboard.press('Enter')
+                await page.waitForNetworkIdle()
+                try {
+                    await page.waitForSelector(commentSelector)
+                    // Fokus pada selector 
+                    await page.focus(commentSelector)
+                    // Menuliskan komentar 
+                    await page.type(commentSelector, comment, { delay: 100 })
+                    // melakukan enter 
+                     await page.keyboard.press('Enter')
+                } catch (error) {
+                    await page.close()
+                    await browser.close()
+                    throw error
+                }
                 await page.close()
                 await browser.close()
             }
         } catch (error) {
-            return error
+            throw error
         }
     }
 }
