@@ -1,10 +1,37 @@
-# Node + Express Service Starter
+## Dokumentasi Aplikasi Like Komen Node.js
 
-This is a simple API sample in Node.js with express.js based on [Google Cloud Run Quickstart](https://cloud.google.com/run/docs/quickstarts/build-and-deploy/deploy-nodejs-service).
+### Prasyarat
 
-## Getting Started
+* **Node.js v20.18.0:** Pastikan telah menginstal Node.js versi 20.18.0. Anda dapat mengunduhnya dari [https://nodejs.org/](https://nodejs.org/).
+* **npm:** npm (Node Package Manager) biasanya terinstal otomatis bersama Node.js.
 
-Server should run automatically when starting a workspace. To run manually, run:
-```sh
-npm run dev
-```
+### Instalasi
+
+1. **Clone repository:**
+   ```bash
+   git clone <alamat-repository-aplikasi-anda>
+   ```
+2. **Buka direktori aplikasi:**
+   ```bash
+   cd <nama-direktori-aplikasi>
+   ```
+3. **Instal library:**
+   ```bash
+   npm install
+   ```
+
+### Menjalankan Aplikasi
+
+1. **Jalankan server:**
+   ```bash
+   npm run start
+   ```
+2. **Akses aplikasi:**
+   Buka browser dan kunjungi alamat: [https://127.0.0.1:3000](https://127.0.0.1:3000).
+
+### Catatan
+
+* Pastikan port 3000 tidak sedang digunakan oleh aplikasi lain.
+* Jika terdapat masalah, periksa kembali versi Node.js yang terpasang dan pastikan semua library telah terpasang dengan benar.
+
+
